@@ -2,6 +2,7 @@
 module.exports = (router, models, awsManager) => {
 
   let User = models.User;
+  let File = models.File;
 
   router.route('/users')
   .get((req, res) => {
@@ -57,7 +58,13 @@ module.exports = (router, models, awsManager) => {
     User.find({name:req.params.name}, (err, match) => {
       if (err) return res.sendStatus(500).send(err);
       if (!match[0]) return res.status(400).send(`user ${req.params.name} does not exist`);
-      awsManager.uploadFile(match[0], req.body, () => res.sendStatus(200));
+      awsManager.uploadFile(match[0], req.body, () => {
+        var newFile = new File({name: req.body.name, url: req.params.name+'/'+req.body.name});
+        newFile.save((err, file) => {
+          if (err) return res.status(500).send('error creating file');
+          return res.status(200).json(file).end();
+         });
+      });
     });
   });
 

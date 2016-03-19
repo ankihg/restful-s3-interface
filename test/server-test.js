@@ -108,6 +108,8 @@ describe('test time', () => {
     .end((err, res) => {
       expect(err).eql(null);
       expect(res).status(200);
+      expect(res.body._id).not.eql(null);
+      expect(res.body.url).eql('hilda-garde/chew');
       done();
     });
   });
