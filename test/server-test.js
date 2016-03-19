@@ -101,9 +101,16 @@ describe('test time', () => {
     });
   });
 
-  // it('post file name:plz, content:squirrel to user hilda-garde', (done) => {
-  //
-  // });
+  it('post file name:chew, content:squirrel to user hilda-garde', (done) => {
+    request('localhost:3000')
+    .post('/users/hilda-garde/files')
+    .send({"name": "chew", "content": "squirrel"})
+    .end((err, res) => {
+      expect(err).eql(null);
+      expect(res).status(200);
+      done();
+    });
+  });
 
 
   after((done) => {

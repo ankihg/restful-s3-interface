@@ -54,7 +54,11 @@ module.exports = (router, models, awsManager) => {
 
   })
   .post((req, res) => {
-
+    User.find({name:req.params.name}, (err, match) => {
+      if (err) return res.sendStatus(500).send(err);
+      if (!match[0]) return res.status(400).send(`user ${req.params.name} does not exist`);
+      awsManager.uploadFile(match[0], req.body, () => res.sendStatus(200));
+    });
   });
 
 
