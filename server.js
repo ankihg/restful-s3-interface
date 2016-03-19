@@ -10,6 +10,9 @@ let models = require(__dirname + '/models');
 const AWSmanager = require(__dirname + '/lib/AWS-manager.js');
 let awsManager = new AWSmanager();
 
+const FileManager = require(__dirname + '/lib/FileManager.js');
+let fileManager = new FileManager();
+
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
@@ -17,7 +20,7 @@ app.use((req, res, next) => {
   next();
 });
 
-require(__dirname + '/routes/users-router.js')(router, models, awsManager);
+require(__dirname + '/routes/users-router.js')(router, models, awsManager, fileManager);
 
 app.use(router);
 

@@ -1,5 +1,5 @@
 'use strict';
-module.exports = (router, models, awsManager) => {
+module.exports = (router, models, awsManager, fileManager) => {
 
   let File = models.File;
 
