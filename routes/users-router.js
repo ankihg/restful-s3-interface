@@ -1,5 +1,5 @@
 'use strict';
-module.exports = (router, models) => {
+module.exports = (router, models, awsManager) => {
 
   let User = models.User;
 
@@ -19,7 +19,7 @@ module.exports = (router, models) => {
       var newUser = new User(req.body);
       newUser.save((err, user) => {
         if (err) return res.status(500).send('error creating user');
-        return res.status(200).json(user).end();
+        awsManager.makeBucket(user.name, () => res.status(200).json(user).end());
        });
     });
   });
@@ -47,6 +47,14 @@ module.exports = (router, models) => {
       if (err) return res.status(500).send(`error remove user ${req.params.name}`);
       return res.sendStatus(200);
     });
+  });
+
+  router.route('/users/:name/files')
+  .get((req, res) => {
+
+  })
+  .post((req, res) => {
+
   });
 
 

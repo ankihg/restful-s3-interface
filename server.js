@@ -7,8 +7,8 @@ let router = new express.Router();
 
 let models = require(__dirname + '/models');
 
-// var AWS = require('aws-sdk');
-// require(__dirname + '/config/cred.js')(AWS);
+const AWSmanager = require(__dirname + '/lib/AWS-manager.js');
+let awsManager = new AWSmanager();
 
 app.use(bodyParser.json());
 
@@ -17,7 +17,7 @@ app.use((req, res, next) => {
   next();
 });
 
-require(__dirname + '/routes/users-router.js')(router, models);
+require(__dirname + '/routes/users-router.js')(router, models, awsManager);
 
 app.use(router);
 
