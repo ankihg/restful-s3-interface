@@ -26,11 +26,18 @@ module.exports = (router, models) => {
 
   router.route('/users/:name')
   .get((req, res) => {
-    console.log('get user by username');
+    console.log(`get user ${req.params.name}`);
     User.find({name:req.params.name}, (err, user) => {
       if (err) return res.status(500).send('error reading user '+req.params.name);
       if (!user[0]) return res.status(400).send(`user ${req.params.name} does not exist`);
       return res.status(200).json(user[0]).end();
+    });
+  })
+  .put((req, res) => {
+    console.log(`update user ${req.params.name}`);
+    User.update({name: req.params.name}, req.body, (err, user) => {
+      if (err) return res.status(500).send('error reading user '+req.params.name);
+      return res.sendStatus(200);
     });
   });
 

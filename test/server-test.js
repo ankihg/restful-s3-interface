@@ -67,7 +67,18 @@ describe('users resource testing', () => {
       expect(res.body.name).eql('hilda-garde');
       done();
     });
-  })
+  });
+
+  it('put lawrence-livermore-III to lawrence-livermore', (done) => {
+    request('localhost:3000')
+    .put('/users/lawrence-livermore')
+    .send({"name": "lawrence-livermore-III"})
+    .end((err, res) => {
+      expect(err).eql(null);
+      expect(res).status(200);
+      done();
+    });
+  });
 
 
   after((done) => {
@@ -76,6 +87,6 @@ describe('users resource testing', () => {
       else console.log('database dropped');
       done();
     });
-  })
+  });
 
 });
