@@ -11,7 +11,7 @@ mongoose.connect(DB_PORT);
 
 describe('users resource testing', () => {
 
-  it('should post lawrence-livermore to users', (done) => {
+  it('post lawrence-livermore to users', (done) => {
     request('localhost:3000')
     .post('/users')
     .send({"name": "lawrence-livermore"})
@@ -23,17 +23,51 @@ describe('users resource testing', () => {
     });
   });
 
-  it('should get all 1 users', (done) => {
+  it('post hilda-garde to users', (done) => {
+    request('localhost:3000')
+    .post('/users')
+    .send({"name": "hilda-garde"})
+    .end((err, res) => {
+      expect(err).eql(null);
+      expect(res).status(200);
+      expect(res.body._id).not.eql(null);
+      done();
+    });
+  });
+
+  it('post lawrence-livermore to users but not create because already exists', (done) => {
+    request('localhost:3000')
+    .post('/users')
+    .send({"name": "lawrence-livermore"})
+    .end((err, res) => {
+      expect(err).eql(null);
+      expect(res).status(200);
+      expect(res.body._id).eql(undefined);
+      done();
+    });
+  });
+
+  it('get all 2 users', (done) => {
     request('localhost:3000')
     .get('/users')
     .end((err, res) => {
       expect(err).eql(null);
       expect(res).status(200);
-      expect(res.body.length).eql(1);
+      expect(res.body.length).eql(2);
       done();
     });
   });
 
+  it('get user hilda-garde', (done) => {
+    request('localhost:3000')
+    .get('/users/hilda-garde')
+    .end((err, res) => {
+      expect(err).eql(null);
+      expect(res).status(200);
+      expect(res.body.name).eql('hilda-garde');
+      done();
+    });
+  })
 
 
   after((done) => {

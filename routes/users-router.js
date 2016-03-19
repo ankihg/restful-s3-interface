@@ -13,16 +13,25 @@ module.exports = (router, models) => {
   })
   .post((req, res) => {
     console.log('post a user');
-
     User.find({name:req.body.name}, (err, matches) => {
+      if (err) return res.sendStatus(500).send(err);
       if (matches.length) return res.status(200).send('username already exists. choose another');
-       var newUser = new User(req.body);
-       newUser.save((err, user) => {
-         if (err) return res.status(500).send('error creating user');
-         return res.status(200).json(user).end;
+      var newUser = new User(req.body);
+      newUser.save((err, user) => {
+        if (err) return res.status(500).send('error creating user');
+        return res.status(200).json(user).end();
        });
-    })
+    });
+  });
 
+  router.route('/users/:name')
+  .get((req, res) => {
+    console.log('get user by username');
+    User.find({name:req.params.name}, (err, user) => {
+      if (err) return res.status(500).send('error reading user '+req.params.name);
+      if (!user[0]) return res.status(400).send(`user ${req.params.name} does not exist`);
+      return res.status(200).json(user[0]).end();
+    });
   });
 
 
