@@ -108,8 +108,19 @@ describe('test time', () => {
     .end((err, res) => {
       expect(err).eql(null);
       expect(res).status(200);
-      expect(res.body._id).not.eql(null);
-      expect(res.body.url).eql('hilda-garde/chew');
+      done();
+    });
+  });
+
+  it('get user hilda-garde who has 1 files', (done) => {
+    request('localhost:3000')
+    .get('/users/hilda-garde')
+    .end((err, res) => {
+      expect(err).eql(null);
+      expect(res).status(200);
+      expect(res.body.name).eql('hilda-garde');
+      expect(res.body.files.length).eql(1);
+      console.log(res.body);
       done();
     });
   });
