@@ -39,6 +39,14 @@ module.exports = (router, models) => {
       if (err) return res.status(500).send('error reading user '+req.params.name);
       return res.sendStatus(200);
     });
+  })
+  .delete((req, res) => {
+    console.log(`delete user ${req.params.name}`);
+    User.find({name:req.params.name})
+    .remove((err) => {
+      if (err) return res.status(500).send(`error remove user ${req.params.name}`);
+      return res.sendStatus(200);
+    });
   });
 
 

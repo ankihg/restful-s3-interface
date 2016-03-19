@@ -80,6 +80,27 @@ describe('users resource testing', () => {
     });
   });
 
+  it('delete lawrence-livermore-III', (done) => {
+    request('localhost:3000')
+    .del('/users/lawrence-livermore-III')
+    .end((err, res) => {
+      expect(err).eql(null);
+      expect(res).status(200);
+      done();
+    });
+  });
+
+  it('get all 1 users', (done) => {
+    request('localhost:3000')
+    .get('/users')
+    .end((err, res) => {
+      expect(err).eql(null);
+      expect(res).status(200);
+      expect(res.body.length).eql(1);
+      done();
+    });
+  });
+
 
   after((done) => {
     mongoose.connection.db.dropDatabase((err) => {
