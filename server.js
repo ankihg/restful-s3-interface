@@ -7,6 +7,9 @@ let router = new express.Router();
 
 let models = require(__dirname + '/models');
 
+// var AWS = require('aws-sdk');
+// require(__dirname + '/config/cred.js')(AWS);
+
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
