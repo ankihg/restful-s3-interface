@@ -14,7 +14,9 @@ app.use((req, res, next) => {
   next();
 });
 
+require(__dirname + '/routes/users-router.js')(router, models);
 
+app.use(router);
 
 
 app.listen(3000, () => console.log('server speaking.'));

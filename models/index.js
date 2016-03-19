@@ -7,7 +7,7 @@ mongoose.connect(DB_PORT);
 let models = {};
 
 
-require(__dirname + '/File.js');
-require(__dirname + '/User.js');
+require(__dirname + '/File.js')(mongoose, models);
+require(__dirname + '/User.js')(mongoose, models);
 
 module.exports = models;

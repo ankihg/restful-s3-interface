@@ -5,5 +5,5 @@ module.exports = (mongoose, models) => {
     files: [{type:mongoose.Schema.Types.ObjectId, ref:'File'}]
   });
 
-  models.User = mongoose.model(userSchema, 'User');
+  models.User = mongoose.model('User', userSchema);
 }

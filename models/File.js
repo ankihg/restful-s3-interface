@@ -5,5 +5,5 @@ module.exports = (mongoose, models) => {
     url: String
   });
 
-  models.File = mongoose.model(fileSchema, 'File');
+  models.File = mongoose.model('File', fileSchema);
 };
