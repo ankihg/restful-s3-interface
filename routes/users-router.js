@@ -52,8 +52,15 @@ module.exports = (router, models, awsManager, fileManager) => {
 
   router.route('/users/:name/files')
   .get((req, res) => {
-
-  })
+    console.log(`get user ${req.params.name}s files`);
+    User.find({name:req.params.name})
+    .populate('files')
+    .exec((err, user) => {
+      if (err) return res.status(500).send(err);
+      if (!user[0]) return res.status(400).send(`user ${req.params.name} does not exist`);
+      return res.status(200).json(user[0].files).end();
+      });
+    })
   .post((req, res) => {
     User.find({name:req.params.name}, (err, match) => {
       if (err) return res.sendStatus(500).send(err);

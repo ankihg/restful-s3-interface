@@ -112,15 +112,13 @@ describe('test time', () => {
     });
   });
 
-  it('get user hilda-garde who has 1 files', (done) => {
+  it('get all 1 files of user hilda-garde', (done) => {
     request('localhost:3000')
-    .get('/users/hilda-garde')
+    .get('/users/hilda-garde/files')
     .end((err, res) => {
       expect(err).eql(null);
       expect(res).status(200);
-      expect(res.body.name).eql('hilda-garde');
-      expect(res.body.files.length).eql(1);
-      console.log(res.body);
+      expect(res.body.length).eql(1);
       done();
     });
   });
