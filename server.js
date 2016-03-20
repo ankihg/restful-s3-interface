@@ -21,6 +21,7 @@ app.use((req, res, next) => {
 });
 
 require(__dirname + '/routes/users-router.js')(router, models, awsManager, fileManager);
+require(__dirname + '/routes/files-router.js')(router, models, awsManager, fileManager);
 
 app.use(router);
 

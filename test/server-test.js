@@ -123,6 +123,17 @@ describe('test time', () => {
     });
   });
 
+  it('get file chew of user hilda-garde', (done) => {
+    request('localhost:3000')
+    .get('/files/hilda-garde/chew')
+    .end((err, res) => {
+      expect(err).eql(null);
+      expect(res).status(200);
+      expect(res.body.name).eql('chew');
+      done();
+    });
+  })
+
 
   after((done) => {
     mongoose.connection.db.dropDatabase((err) => {
