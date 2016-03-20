@@ -132,7 +132,30 @@ describe('test time', () => {
       expect(res.body.name).eql('chew');
       done();
     });
-  })
+  });
+
+  it('get content of file chew of user hilda-garde', (done) => {
+    request('localhost:3000')
+    .get('/files/hilda-garde/chew/content')
+    .end((err, res) => {
+      expect(err).eql(null);
+      expect(res).status(200);
+      expect(res.text).eql('squirrel');
+      done();
+    });
+  });
+
+  it('put content:bone to file chew of user hilda-garde', (done) => {
+    request('localhost:3000')
+    .put('/files/hilda-garde/chew')
+    .send({"name": "chew", "content": "bone"})
+    .end((err, res) => {
+      expect(err).eql(null);
+      expect(res).status(200);
+      done();
+    });
+  });
+
 
 
   after((done) => {
