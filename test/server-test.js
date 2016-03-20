@@ -156,6 +156,16 @@ describe('test time', () => {
     });
   });
 
+  it('get content of file chew of user hilda-garde', (done) => {
+    request('localhost:3000')
+    .get('/files/hilda-garde/chew/content')
+    .end((err, res) => {
+      expect(err).eql(null);
+      expect(res).status(200);
+      expect(res.text).eql('bone');
+      done();
+    });
+  });
 
 
   after((done) => {
