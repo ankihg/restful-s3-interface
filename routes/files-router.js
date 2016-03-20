@@ -17,19 +17,14 @@ module.exports = (router, models, awsManager, fileManager) => {
       if (!files.length) return res.status(400).send(`file ${req.params.username}/${req.params.filename} does not exist`);
       var file = files[0];
 
-      fileManager.writeFile(req.body, (err, path) => {
-        if (err) res.status(500).send(err);
+      fileManager.makeFile(req.body, (err, data) => {
+        if (err) return res.status(500).send(err);
 
-        fileManager.readFile(path, (err, data) => {
-          if (err) res.status(500).send(err);
+        awsManager.uploadFile({name:req.params.username}, {name: req.body.name, content:data}, () => {
 
-          awsManager.uploadFile({name:req.params.username}, {name: req.body.name, content:data}, () => {
-
-              file.update({name:req.body.name, url:req.params.username+'/'+req.body.name}, (err, file) => {
-                if (err) return res.status(500).send('error updating file');
-                return res.status(200).json(file).end();
-              });
-
+          file.update({name:req.body.name, url:req.params.username+'/'+req.body.name}, (err, file) => {
+            if (err) return res.status(500).send('error updating file');
+            return res.status(200).json(file).end();
           });
         });
       });
