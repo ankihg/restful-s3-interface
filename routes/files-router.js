@@ -29,6 +29,14 @@ module.exports = (router, models, awsManager, fileManager) => {
         });
       });
     });
+  })
+  .delete((req, res) => {
+    File.find({url:req.params.username+'/'+req.params.filename})
+    .remove()
+    .exec((err) => {
+      if (err) return res.status(500).send(err);
+      return res.sendStatus(200);
+    });
   });
 
   router.route('/files/:username/:filename/content')

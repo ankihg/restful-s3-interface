@@ -167,6 +167,38 @@ describe('test time', () => {
     });
   });
 
+  it('post file name:sniff, content:stink to user hilda-garde', (done) => {
+    request('localhost:3000')
+    .post('/users/hilda-garde/files')
+    .send({"name": "sniff", "content": "stink"})
+    .end((err, res) => {
+      expect(err).eql(null);
+      expect(res).status(200);
+      done();
+    });
+  });
+
+  it('delete file chew of user hilda-garde', (done) => {
+    request('localhost:3000')
+    .del('/files/hilda-garde/chew')
+    .end((err, res) => {
+      expect(err).eql(null);
+      expect(res).status(200);
+      done();
+    });
+  });
+
+  it('get all 1 files of user hilda-garde', (done) => {
+    request('localhost:3000')
+    .get('/users/hilda-garde/files')
+    .end((err, res) => {
+      expect(err).eql(null);
+      expect(res).status(200);
+      expect(res.body.length).eql(1);
+      done();
+    });
+  });
+
 
   after((done) => {
     mongoose.connection.db.dropDatabase((err) => {
