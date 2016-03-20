@@ -15,7 +15,7 @@ module.exports = (router, models, awsManager, fileManager) => {
   .post((req, res) => {
     console.log('post a user');
     User.find({name:req.body.name}, (err, matches) => {
-      if (err) return res.sendStatus(500).send(err);
+      if (err) return res.status(500).send(err);
       if (matches.length) return res.status(200).send('username already exists. choose another');
 
       var newUser = new User(req.body);
@@ -70,27 +70,22 @@ module.exports = (router, models, awsManager, fileManager) => {
       if (!match[0]) return res.status(400).send(`user ${req.params.name} does not exist`);
       var user = match[0];
 
-      fileManager.writeFile(req.body, (err, path) => {
+      fileManager.makeFile(req.body, (err, data) => {
         if (err) res.status(500).send(err);
 
-        fileManager.readFile(path, (err, data) => {
-          if (err) res.status(500).send(err);
+        awsManager.uploadFile(user, {name: req.body.name, content:data}, () => {
 
-          awsManager.uploadFile(user, {name: req.body.name, content:data}, () => {
+        var mongoFile = new File({name: req.body.name, url: user.name+'/'+req.body.name});
+          mongoFile.save((err, file) => {
+            if (err) return res.status(500).send('error creating file');
 
-            var mongoFile = new File({name: req.body.name, url: user.name+'/'+req.body.name});
-            mongoFile.save((err, file) => {
-              if (err) return res.status(500).send('error creating file');
-
-              user.update({$push: {"files": file}}, (err, user) => {
-                if (err) return res.status(500).send('error updating user');
-                return res.status(200).json(user).end();
-              });
-             });
+            user.update({$push: {"files": file}}, (err, user) => {
+              if (err) return res.status(500).send('error updating user');
+              return res.status(200).json(user).end();
+            });
           });
         });
       });
-
 
     });
   });
